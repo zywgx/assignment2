@@ -1,0 +1,148 @@
+========================================================================
+CEN4020 - Assignment 2: Git and Object-Oriented Programming
+Name: William Emery Wilkerson
+FSUID: wew22
+========================================================================
+
+SUBMISSION ANNOTATIONS
+----------------------
+Date Git Lab Tutorials completed: October 12, 2026
+Date GitHub account created: years ago
+GitHub repository access: https://github.com/zywgx/assignment2
+  (The fork is public, so this URL is enough for the professor to view it.)
+
+
+ANSWERS
+=======
+
+1) Console output saved at the end of step 3.C (the git push output)
+--------------------------------------------------------------------
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 491 bytes | 491.00 KiB/s, done.
+Total 4 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/zywgx/assignment2.git
+   75a9456..aea290e  master -> master
+
+
+2) How many commits have been made to the repository so far (by anyone)?
+------------------------------------------------------------------------
+Number of commits: 9
+
+Command used:
+   git rev-list --all --count
+
+(This counts every commit on every branch. For just the current branch:
+   git rev-list --count HEAD )
+
+
+3) When was README.md last modified?
+------------------------------------
+Last modified: Tue Oct 13 00:00:12 2026 -0400
+
+Command used:
+   git log -1 --format="%cd" -- README.md
+
+(Shows the date of the most recent commit that touched README.md. You can
+ also run  git log -1 README.md  to see the full commit entry.)
+
+
+4) Two reasons branches are used in a Git repository
+----------------------------------------------------
+a) Isolation of work: a branch is a separate line of development, so you can
+   build a new feature or fix a bug without touching the stable main code.
+   Unfinished or experimental work never breaks what everyone else is using.
+b) Parallel collaboration: multiple developers (or one developer on several
+   tasks) can each work on their own branch at the same time and then merge
+   the results, which keeps their changes from colliding.
+
+
+5) Difference between "git log" and "git status"
+------------------------------------------------
+git log shows the HISTORY of the repository: the commits already made, with
+their hashes, authors, dates, and commit messages.
+git status shows the CURRENT STATE of the working directory and staging area
+right now: which files are modified, staged, or untracked, and whether your
+branch is ahead of or behind the remote.
+In short: git log looks at the past (committed history); git status looks at
+the present (uncommitted changes).
+
+
+6) Command to see the commits where "Vehicle.h" was one of the committed files
+------------------------------------------------------------------------------
+   git log -- Vehicle.h
+
+(If the file is in a subfolder, give its path, e.g. git log -- src/Vehicle.h.
+ Add --follow to track it across renames:  git log --follow -- Vehicle.h )
+
+
+7) Command to see the commits whose commit message contains the word "file"
+---------------------------------------------------------------------------
+   git log --grep=file
+
+(Case-insensitive version:  git log -i --grep=file )
+
+
+8) Object-Oriented Programming concepts
+---------------------------------------
+(I) Inheritance: a mechanism in which one class (the child / derived /
+    subclass) acquires the attributes and methods of another class (the
+    parent / base / superclass). It lets you reuse code and build specialized
+    classes from more general ones. Example: in this repository Car, Bicycle,
+    and PoweredVehicle all inherit from the base Vehicle class, getting
+    Vehicle's data and behavior while adding their own.
+
+(II) Polymorphism: the ability for the same interface or method call to
+    behave differently depending on the actual object type acting on it. In
+    C++ this is commonly done with virtual functions: a base-class pointer
+    can call an overridden method and the correct derived version runs at run
+    time. Example: calling mileageEstimate() or toString() through a Vehicle*
+    actually runs the Car, Bicycle, or PoweredVehicle version depending on
+    the real object.
+
+(III) Encapsulation: bundling data (attributes) and the methods that operate
+    on that data together inside a class, while restricting direct access to
+    the internal state (e.g. with private members) and exposing only a
+    controlled public interface (e.g. getters/setters). This protects an
+    object's data from invalid outside modification and hides implementation
+    details.
+
+
+9) Difference between "Dictator and Lieutenants" and "Integration Manager" workflows
+------------------------------------------------------------------------------------
+The main difference is the number of integration layers.
+
+In the Integration Manager workflow there is a single integrator. Each
+contributor has their own public repository; one integration manager pulls
+contributors' changes, tests and merges them, and pushes the result to the
+single blessed (reference) repository that everyone else clones from.
+
+The Dictator and Lieutenants workflow adds a hierarchy on top of that idea.
+Instead of one integrator there are several "lieutenants," each responsible
+for integrating the changes of one subsystem / part of the project. A single
+"dictator" then merges the lieutenants' branches into the reference
+repository. So it is a multi-tier version of the integration-manager model
+(used by very large projects such as the Linux kernel), whereas the
+integration-manager workflow has only one integrator.
+
+
+10) How a team of 100 developers benefits from "Dictator and Lieutenants" over "Centralized"
+--------------------------------------------------------------------------------------------
+In a Centralized workflow everyone shares and writes to one single
+repository. With 100 developers that repository becomes a bottleneck and a
+single point of failure: everyone competes to push to the same place,
+conflicts are frequent, a single broken commit immediately affects all 100
+people, and there is no built-in layer of review or ownership.
+
+The Dictator and Lieutenants workflow scales far better because the
+integration work is divided up. Each lieutenant owns and integrates one
+subsystem, so the 100 developers are split into manageable groups working in
+parallel without stepping on each other. Changes are reviewed and filtered at
+the lieutenant level before the dictator merges them into the canonical
+repository, which keeps the main history clean and stable. This distributes
+the workload, adds quality-control checkpoints at each tier, isolates
+mistakes to a subsystem instead of the whole project, and removes the
+single-bottleneck problem of the centralized model.
